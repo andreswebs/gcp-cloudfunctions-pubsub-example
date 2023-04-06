@@ -6,13 +6,13 @@ variable "region" {
 variable "function_service_account_name" {
   type        = string
   description = "Function service account name"
-  default     = "function-test"
+  default     = "function-test-pubsub"
 }
 
 variable "function_name" {
   type        = string
   description = "Function name"
-  default     = "function-test"
+  default     = "function-test-pubsub"
 }
 
 variable "function_description" {
@@ -24,7 +24,7 @@ variable "function_description" {
 variable "topic_name" {
   type        = string
   description = "Name of the trigger topic"
-  default     = "function-test-trigger"
+  default     = "function-test-pubsub-trigger"
 }
 
 variable "code_artifacts_bucket" {
@@ -35,7 +35,7 @@ variable "code_artifacts_bucket" {
 variable "function_object" {
   type        = string
   description = "Bucket object path to the Cloud Functions `.zip` file"
-  default     = "function-test.zip"
+  default     = "function-test-pubsub.zip"
 }
 
 variable "function_retry" {

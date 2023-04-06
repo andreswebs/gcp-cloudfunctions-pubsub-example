@@ -22,7 +22,7 @@ resource "google_cloudfunctions_function" "this" {
   name                = var.function_name
   region              = var.region
   description         = var.function_description
-  runtime             = "nodejs16"
+  runtime             = "nodejs18"
   entry_point         = "main"
   timeout             = 540
   available_memory_mb = 256

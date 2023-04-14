@@ -3,17 +3,17 @@ import type { Context } from '@google-cloud/functions-framework';
 
 import { eventMaxAgeMs } from './constants';
 
-import { isActionMsg } from './types';
+import { ActionMsg, isActionMsg } from './types';
 
 async function main(event: PubsubMessage, context: Context) {
-  console.log(JSON.stringify(event));
-  console.log(JSON.stringify(context));
-
   const eventAgeMs = Date.now() - Date.parse(context.timestamp as string);
+  if (eventAgeMs > eventMaxAgeMs) {
+    return;
+  }
 
   if (event.data) {
     const dataStr = Buffer.from(event.data as string, 'base64').toString();
-    let data: Record<string, unknown>;
+    let data: ActionMsg;
 
     try {
       data = JSON.parse(dataStr);
@@ -25,19 +25,17 @@ async function main(event: PubsubMessage, context: Context) {
       console.log(JSON.stringify({ message: 'success', ...data }));
 
       if (data.action === 'fail') {
-        if (eventAgeMs > eventMaxAgeMs) {
-          return;
-        }
         throw new Error('FAIL');
       }
     } catch (e) {
       const message = (e as Error).message;
-      console.log(JSON.stringify({
-        severity: 'ERROR',
-        message,
-      }));
+      console.log(
+        JSON.stringify({
+          severity: 'ERROR',
+          message,
+        })
+      );
     }
-
   }
 }
 

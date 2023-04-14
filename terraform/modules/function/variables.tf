@@ -53,5 +53,5 @@ variable "schedule_enabled" {
 variable "schedule_cron" {
   type        = string
   description = "Cron expression for function trigger"
-  default     = "12 12 * * *"
+  default     = "0/30 * * * *"
 }

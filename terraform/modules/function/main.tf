@@ -5,6 +5,15 @@ resource "google_pubsub_topic" "function_trigger" {
   labels = {}
 }
 
+locals {
+  scheduler_data = <<-EOT
+    {
+      "action": "start",
+      "notify": true
+    }
+  EOT
+}
+
 resource "google_cloud_scheduler_job" "this" {
   count       = var.schedule_enabled ? 1 : 0
   name        = var.topic_name
@@ -14,7 +23,7 @@ resource "google_cloud_scheduler_job" "this" {
 
   pubsub_target {
     topic_name = google_pubsub_topic.function_trigger.id
-    data       = base64encode("start")
+    data       = base64encode(local.scheduler_data)
   }
 }
 
